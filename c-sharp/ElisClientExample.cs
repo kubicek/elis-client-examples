@@ -19,29 +19,37 @@ namespace elis_example_c_sharp
         [DataMember]
         public string message { get; set; }
     }
-    class Program
+    class ElisClientExample
     {
         private HttpClient client = new HttpClient();
         private string host;
         private string secretKey;
 
-        public Program(string secretKey, string host)
+        public ElisClientExample(string secretKey, string host)
         {
             this.host = host;
             this.secretKey = secretKey;
             client.DefaultRequestHeaders.Add("Authorization", "secret_key " + secretKey);
         }
 
-        private async Task<string> GetInvoice(String invoiceId)
+        static void Main(string[] args)
         {
-            var response = await client.GetAsync(host + "/document/" + invoiceId);
-            var serializer = new DataContractJsonSerializer(typeof(Result));
-            var result = serializer.ReadObject(await response.Content.ReadAsStreamAsync()) as Result;
-            Console.WriteLine("status: " + result.status + ", message: " + result.message);
-            var processedInvoice = await response.Content.ReadAsStringAsync();
-            return processedInvoice;
+            var secretKey = "xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx";
+            var host = "https://all.rir.rossum.ai";
+            var filePath = "invoice.pdf"; // can be a PDF or PNG
+            var elisClient = new ElisClientExample(secretKey, host);
+            elisClient.SubmitInvoiceAndWaitForResult(filePath).Wait();
         }
 
+        private async Task SubmitInvoiceAndWaitForResult(string filePath)
+        {
+            var documentId = await SubmitInvoice(filePath);
+            var extractedInvoice = await GetInvoice(documentId);
+            Console.WriteLine(extractedInvoice);
+            // now you can process the invoice extracted by Elis API...
+        }
+
+        // Submits the invoice from a file to the Elis API, returns a document id.
         private async Task<string> SubmitInvoice(string filePath)
         {
             FileStream fs = File.OpenRead(filePath);
@@ -64,19 +72,28 @@ namespace elis_example_c_sharp
 
             return result.id;
         }
-        private async Task SubmitInvoiceAndWaitForResult(string filePath)
-        {
-            var documentId = await SubmitInvoice(filePath);
-            var processedInvoice = await GetInvoice(documentId);
-            Console.WriteLine(processedInvoice);
-        }
 
-        static void Main(string[] args)
+        // Given submitted document id polls for invoice to be processed, returns the processd invoice in JSON.
+        private async Task<string> GetInvoice(String invoiceId, int maxTries=30, int sleepMillis=5000)
         {
-            var secretKey = "xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx";
-            var host = "https://all.rir.rossum.ai";
-            var filePath = "invoice.pdf";
-            new Program(secretKey, host).SubmitInvoiceAndWaitForResult(filePath).Wait();
+            for (int i = 0; i < maxTries; i++)
+            {
+                Console.WriteLine("Waiting for invoice: " + (i * sleepMillis * 1e-3) + " s / " + (maxTries * sleepMillis * 1e-3) + " s");
+                var response = await client.GetAsync(host + "/document/" + invoiceId);
+                var serializer = new DataContractJsonSerializer(typeof(Result));
+                var result = serializer.ReadObject(await response.Content.ReadAsStreamAsync()) as Result;
+                Console.WriteLine("status: " + result.status + ", message: " + result.message);
+                switch (result.status) {
+                    case "processing":
+                        await Task.Delay(sleepMillis);
+                        break;
+                    case "ready":
+                        return await response.Content.ReadAsStringAsync();
+                    case "error":
+                        throw new Exception("Error while processing invoice " + invoiceId + ": " + result.message);
+                }
+            }
+            throw new Exception("Time out while waiting for the invoice the be processed.");
         }
     }
 }
