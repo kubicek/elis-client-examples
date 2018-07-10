@@ -52,8 +52,7 @@ namespace elis_example_c_sharp
             Console.WriteLine("Media type: " + mediaType);
             fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(mediaType);
             var multiPartContent = new MultipartFormDataContent {
-                // TODO: set file base name
-                {fileContent, "file", "invoice.pdf"}
+                {fileContent, "file", Path.GetFileName(filePath)}
             };
             var response = await client.PostAsync(host + "/document", multiPartContent);
             Console.WriteLine("HTTP status code: " + response.StatusCode);
