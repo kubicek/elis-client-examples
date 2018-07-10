@@ -37,4 +37,5 @@ example.
 
 ## Examples in various languages
 
-- [bash & curl](bash-curl/)
+- [Bash & curl](bash-curl/)
+- [Scala & sttp/json4s](scala-sttp/)
