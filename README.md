@@ -38,4 +38,5 @@ example.
 ## Examples in various languages
 
 - [Bash & curl](bash-curl/)
+- [Python & requests/polling](python-requests/)
 - [Scala & sttp/json4s](scala-sttp/)
