@@ -42,3 +42,4 @@ example.
 - [Scala & sttp/json4s](scala-sttp/)
 - [Javascript & node.js](javascript-nodejs/)
 - [PHP & curl](php-curl/)
+- [C#](c-sharp/)
