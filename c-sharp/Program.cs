@@ -1,45 +1,83 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
 
 namespace elis_example_c_sharp
 {
+    [DataContract]
+    class Result
+    {
+        [DataMember]
+        public string status { get; set; }
+        [DataMember]
+        public string id { get; set; }
+        [DataMember]
+        public string message { get; set; }
+    }
     class Program
     {
-        private static async Task GetInvoice(String invoiceId)
+        private HttpClient client = new HttpClient();
+        private string host;
+        private string secretKey;
+
+        public Program(string secretKey, string host)
         {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("Authorization", "secret_key xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx");
-                var getTask = client.GetStringAsync("https://all.rir.rossum.ai/document/" + invoiceId);
-                var message = await getTask;
-                Console.WriteLine(message);
-            }
+            this.host = host;
+            this.secretKey = secretKey;
+            client.DefaultRequestHeaders.Add("Authorization", "secret_key " + secretKey);
         }
 
-        private static async Task SubmitInvoice()
+        private async Task<string> GetInvoice(String invoiceId)
         {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("Authorization", "secret_key xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx");
-                FileStream fs = File.OpenRead("invoice.pdf");
-                var fileContent = new StreamContent(fs);
-                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/pdf");
-                var multiPartContent = new MultipartFormDataContent
-                    {
-                        {fileContent, "file", "invoice.pdf"}
-                    };
-                var response = await client.PostAsync("https://all.rir.rossum.ai/document", multiPartContent);
-                Console.WriteLine(response.StatusCode);
-                Console.WriteLine(await response.Content.ReadAsStringAsync());
-            }
+            var response = await client.GetAsync(host + "/document/" + invoiceId);
+            var serializer = new DataContractJsonSerializer(typeof(Result));
+            var result = serializer.ReadObject(await response.Content.ReadAsStreamAsync()) as Result;
+            Console.WriteLine("status: " + result.status + ", message: " + result.message);
+            var processedInvoice = await response.Content.ReadAsStringAsync();
+            return processedInvoice;
         }
+
+        private async Task<string> SubmitInvoice(string filePath)
+        {
+            FileStream fs = File.OpenRead(filePath);
+            Console.WriteLine("Submitting invoice: " + filePath);
+            var ext = Path.GetExtension(filePath).ToLower();
+            var mediaType = (ext == ".png") ? "image/png" : "application/pdf";
+            var fileContent = new StreamContent(fs);
+            Console.WriteLine("Media type: " + mediaType);
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse(mediaType);
+            var multiPartContent = new MultipartFormDataContent {
+                // TODO: set file base name
+                {fileContent, "file", "invoice.pdf"}
+            };
+            var response = await client.PostAsync(host + "/document", multiPartContent);
+            Console.WriteLine("HTTP status code: " + response.StatusCode);
+
+            var serializer = new DataContractJsonSerializer(typeof(Result));
+            var result = serializer.ReadObject(await response.Content.ReadAsStreamAsync()) as Result;
+
+            Console.WriteLine("Submitted invoice with id: " + result.id);
+
+            return result.id;
+        }
+        private async Task SubmitInvoiceAndWaitForResult(string filePath)
+        {
+            var documentId = await SubmitInvoice(filePath);
+            var processedInvoice = await GetInvoice(documentId);
+            Console.WriteLine(processedInvoice);
+        }
+
         static void Main(string[] args)
         {
-            SubmitInvoice().Wait();
-            // GetInvoice("4f559192a954da7de6553df1").Wait();
+            var secretKey = "xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx";
+            var host = "https://all.rir.rossum.ai";
+            var filePath = "invoice.pdf";
+            new Program(secretKey, host).SubmitInvoiceAndWaitForResult(filePath).Wait();
         }
     }
 }
