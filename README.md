@@ -40,4 +40,5 @@ example.
 - [Bash & curl](bash-curl/)
 - [Python & requests/polling](python-requests/)
 - [Scala & sttp/json4s](scala-sttp/)
+- [Javascript & node.js](javascript-nodejs/)
 - [PHP & curl](php-curl/)
