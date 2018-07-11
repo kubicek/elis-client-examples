@@ -6,7 +6,7 @@
 
 // private API key:
 $API_KEY = 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx';
-$document_path = '../data/invoice.pdf';
+$document_path = 'invoice.pdf';
 
 // first we upload the document
 
