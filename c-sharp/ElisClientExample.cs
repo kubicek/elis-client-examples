@@ -32,16 +32,21 @@ namespace elis_example_c_sharp
             client.DefaultRequestHeaders.Add("Authorization", "secret_key " + secretKey);
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            var secretKey = "xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx";
-            var host = "https://all.rir.rossum.ai";
-            var filePath = "invoice.pdf"; // can be a PDF or PNG
+            if (args.Length != 3) {
+                Console.WriteLine("Usage: dotnet run -- DOCUMENT_PATH ELIS_API_HOST SECRET_KEY");
+                Console.WriteLine("Example: dotnet run -- invoice.pdf https://all.rir.rossum.ai xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx");
+                Environment.Exit(-1);
+            }
+            var filePath = args[0]; // can be a PDF or PNG
+            var host = args[1];
+            var secretKey = args[2];
             var elisClient = new ElisClientExample(secretKey, host);
             elisClient.SubmitInvoiceAndWaitForResult(filePath).Wait();
         }
-
-        private async Task SubmitInvoiceAndWaitForResult(string filePath)
+        
+        public async Task SubmitInvoiceAndWaitForResult(string filePath)
         {
             var documentId = await SubmitInvoice(filePath);
             var extractedInvoice = await GetInvoice(documentId);
@@ -50,7 +55,7 @@ namespace elis_example_c_sharp
         }
 
         // Submits the invoice from a file to the Elis API, returns a document id.
-        private async Task<string> SubmitInvoice(string filePath)
+        public async Task<string> SubmitInvoice(string filePath)
         {
             FileStream fs = File.OpenRead(filePath);
             Console.WriteLine("Submitting invoice: " + filePath);
@@ -73,8 +78,8 @@ namespace elis_example_c_sharp
             return result.id;
         }
 
-        // Given submitted document id polls for invoice to be processed, returns the processd invoice in JSON.
-        private async Task<string> GetInvoice(String invoiceId, int maxTries=30, int sleepMillis=5000)
+        // Given submitted document id it polls for invoice to be processed, returns the processd invoice in JSON.
+        public async Task<string> GetInvoice(String invoiceId, int maxTries=30, int sleepMillis=5000)
         {
             for (int i = 0; i < maxTries; i++)
             {
