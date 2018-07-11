@@ -1,8 +1,10 @@
 # Elis API client example in Scala & sttp & sbt
 
-Check the code: [ElisClientExampleSttp.scala](scala-sttp/src/main/scala/ai/rossum/elis/example/ElisClientExampleSttp.scala).
+## Check the code
 
-Usage:
+- [ElisClientExampleSttp.scala](src/main/scala/ai/rossum/elis/example/ElisClientExampleSttp.scala)
+
+## Usage
 
 ```
 Usage: elis-example [options]
@@ -18,7 +20,7 @@ Build the example app, submit a document and wait for the result processed by El
 sbt "run --filePath ../data/invoice.pdf --secretKey xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
-Example output:
+### Example output
 
 ```
 Submitting the invoice...

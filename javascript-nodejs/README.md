@@ -1,19 +1,20 @@
 # Elis API client examples in Javascript & node.js
 
-## Prerequisities
+## Installation
 
-In your project directory:
+In your project directory run:
+
 ```
 npm init --yes
 npm install request --save
 ```
 
-## Usage
-
-Code examples:
+## Check the code
 
 - Submit invoice: `submit_invoice.js`
 - Get processed results: `get_processed_invoice.js`
+
+## Usage
 
 Fill your secret key and possibly the endpoint host in both scripts:
 
@@ -57,6 +58,8 @@ and run it:
 ```
 node get_processed_invoice.js
 ```
+
+### Example output
 
 ```
 0s: status "processing", retrying.

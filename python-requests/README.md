@@ -35,7 +35,7 @@ We can send the invoice and get the extracted JSON by running:
 python elis_client_example.py ../data/invoice.pdf -s xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-Example output:
+### Example output
 
 ```
 Submitting document: ../data/invoice.pdf

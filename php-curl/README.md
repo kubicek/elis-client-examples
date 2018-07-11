@@ -8,6 +8,8 @@ For simplicity we run PHP on Apache in Docker:
 docker run -it --rm -p 8000:80 --name elis_client_example_php -v "$PWD":/var/www/html php:7.0-apache
 ```
 
+## Usage
+
 Fill your secret key to [submit_invoice.php](submit_invoice.php) and set the invoice path:
 
 ```
@@ -24,6 +26,8 @@ cp ../data/* .
 Open [http://locahost:8000/submit_invoice.php](http://locahost:8000/submit_invoice.php) in your browser.
 
 The result should look like the following. You can open the extraction result page at the `Rossum JavaScript API client` link to see the results visually.
+
+### Example output
 
 ```
 File uploaded successfully (3ea61ded5c273b96c4a0e3f9).

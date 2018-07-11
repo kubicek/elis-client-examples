@@ -37,6 +37,8 @@ example.
 
 ## Examples in various languages
 
+In general we send a document file (with security key) to the Elis API, obtain a document id, wait for it being completed (via polling) and get the extracted data in JSON format.
+
 - [Bash & curl](bash-curl/)
 - [Python & requests/polling](python-requests/)
 - [Java & unirest & gradle](java-unirest/)
@@ -44,3 +46,8 @@ example.
 - [Javascript & node.js](javascript-nodejs/)
 - [PHP & curl](php-curl/)
 - [C#](c-sharp/)
+
+## Example data
+
+- [invoice in PDF](data/invoice.pdf)
+- [invoice in PNG](data/invoice.png)

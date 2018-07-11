@@ -8,6 +8,8 @@
   - in this case `get_invoice.sh` performs a single query, not a polling loop
   - code examples in other languages perform polling
 
+## Usage
+
 ```
 export ELIS_API_KEY="xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx"
 
@@ -15,6 +17,8 @@ export ELIS_API_KEY="xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxx
 ./upload_invoice_png.sh ../data/invoice.png
 ./get_invoice.sh 9d1068d6a13515a6bc0f7879
 ```
+
+### Example outputs
 
 In progress:
 
