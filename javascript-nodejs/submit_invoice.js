@@ -2,7 +2,7 @@ var fs = require('fs');
 const request = require('request');
 
 const API_KEY = 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx';
-const DOC_PATH = 'invoice.pdf';
+const DOC_PATH = '../data/invoice.pdf';
 const URL = 'https://all.rir.rossum.ai/document';
 
 request.post({

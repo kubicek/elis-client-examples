@@ -17,8 +17,8 @@ object ElisClientExampleSttp {
   val endpoint = "https://all.rir.rossum.ai"
 
   def main(args: Array[String]): Unit = {
-     val filePath = "invoice.pdf"
-//    val filePath = "invoice.png"
+     val filePath = "../data/invoice.pdf"
+//    val filePath = "../data/invoice.png"
     sendDocument(filePath).flatMap(getDocumentPolling(_)) match {
       case Right(invoice) =>
         println(s"Processed invoice:\n${writePretty(invoice)}")

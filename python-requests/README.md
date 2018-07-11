@@ -15,7 +15,7 @@ endpoint = 'https://all.rir.rossum.ai/'
  # do not use requests.auth.HTTPBasicAuth
 auth_header = {'Authorization': 'secret_key ' + api_key}
 
-with open('invoice.pdf', 'rb') as f:
+with open('../data/invoice.pdf', 'rb') as f:
     response = requests.post(
         endpoint + '/document',
         files={'file': f},
@@ -31,7 +31,7 @@ invoice = json.loads(response.text)
 PNG:
 
 ```
-with open('invoice.png', 'rb') as f:
+with open('../data/invoice.png', 'rb') as f:
     response = requests.post(
         endpoint + '/document',
         files={'file': ('invoice.png', f, 'image/png')},
@@ -53,7 +53,7 @@ api_key = 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx'
 def is_done(response):
     return json.loads(response.text)['status'] != 'processing'
 
-with open('invoice.pdf', 'rb') as f:
+with open('../data/invoice.pdf', 'rb') as f:
     response = requests.post(
         endpoint + '/document',
         files={'file': f},

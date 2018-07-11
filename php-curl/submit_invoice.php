@@ -6,7 +6,7 @@
 
 // private API key:
 $API_KEY = 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx';
-$document_path = 'invoice.pdf';
+$document_path = '../data/invoice.pdf';
 
 // first we upload the document
 
@@ -44,7 +44,7 @@ if (curl_errno($ch)) {
 } else {
     // check the HTTP status code of the request
     $resultStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    // close the session 
+    // close the session
     curl_close($ch);
 
     if ($resultStatus == 200) {
@@ -63,10 +63,10 @@ $secs_per_attempt = 5;
 $success = false;
 for ($i = 0; $i < $max_attempts; $i++){
     sleep($secs_per_attempt);  // wait some time (at least 1 sec) before each request
-    
+
     // initialise the cURL var
     $ch = curl_init();
-    
+
     // get the response from cURL in future
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     // set the URL
@@ -105,7 +105,7 @@ for ($i = 0; $i < $max_attempts; $i++){
                     echo '<a href="https://rossum.ai/document/'.$doc_id.'?apikey='.$API_KEY.'">Rossum JavaScript API client</a><br>';
                     $success = true;
                     echo '<br><br><pre>';
-                    echo json_encode($doc_info, JSON_PRETTY_PRINT);  
+                    echo json_encode($doc_info, JSON_PRETTY_PRINT);
                     echo '</pre>';
                     break 2;  // break out of the loop as well
             }

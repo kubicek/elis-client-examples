@@ -3,7 +3,7 @@
 Build the example app, submit a document and wait for the result processed by Elis API:
 
 ```
-./gradlew run -PappArgs="['invoice.png', 'https://all.rir.rossum.ai', 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx']"
+./gradlew run -PappArgs="['../data/invoice.png', 'https://all.rir.rossum.ai', 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx']"
 ```
 
 Check the code:
