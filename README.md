@@ -39,7 +39,8 @@ example.
 
 - [Bash & curl](bash-curl/)
 - [Python & requests/polling](python-requests/)
-- [Scala & sttp/json4s](scala-sttp/)
+- [Java & unirest & gradle](java-unirest/)
+- [Scala & sttp/json4s & sbt](scala-sttp/)
 - [Javascript & node.js](javascript-nodejs/)
 - [PHP & curl](php-curl/)
 - [C#](c-sharp/)
