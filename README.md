@@ -1,5 +1,7 @@
 # Elis API client examples
 
+These are examples on how to use the Elis Data Extraction API.
+
 ## Docs
 
 https://rossumrir.docs.apiary.io/
