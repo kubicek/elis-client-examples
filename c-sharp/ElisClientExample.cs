@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
@@ -69,6 +70,7 @@ namespace elis_example_c_sharp
             };
             var response = await client.PostAsync(host + "/document", multiPartContent);
             Console.WriteLine("HTTP status code: " + response.StatusCode);
+            await CheckResponse(response);
 
             var serializer = new DataContractJsonSerializer(typeof(Result));
             var result = serializer.ReadObject(await response.Content.ReadAsStreamAsync()) as Result;
@@ -85,6 +87,7 @@ namespace elis_example_c_sharp
             {
                 Console.WriteLine("Waiting for invoice: " + (i * sleepMillis * 1e-3) + " s / " + (maxTries * sleepMillis * 1e-3) + " s");
                 var response = await client.GetAsync(host + "/document/" + invoiceId);
+                await CheckResponse(response);
                 var serializer = new DataContractJsonSerializer(typeof(Result));
                 var result = serializer.ReadObject(await response.Content.ReadAsStreamAsync()) as Result;
                 Console.WriteLine("status: " + result.status + ", message: " + result.message);
@@ -99,6 +102,13 @@ namespace elis_example_c_sharp
                 }
             }
             throw new Exception("Time out while waiting for the invoice the be processed.");
+        }
+
+        private async Task CheckResponse(HttpResponseMessage response) {
+            if (response.StatusCode != HttpStatusCode.OK) {
+                Console.WriteLine(await response.Content.ReadAsStringAsync());
+                Environment.Exit(-2);
+            }
         }
     }
 }
