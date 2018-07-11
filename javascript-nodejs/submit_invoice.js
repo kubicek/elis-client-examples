@@ -5,6 +5,8 @@ const API_KEY = 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxx
 const DOC_PATH = '../data/invoice.pdf';
 const URL = 'https://all.rir.rossum.ai/document';
 
+var contentType = DOC_PATH.toLowerCase().endsWith('.png') ? 'image/pdf' : 'application/pdf'
+
 request.post({
   url: URL,
   method: 'POST',
@@ -15,7 +17,7 @@ request.post({
     file: {
       value: fs.createReadStream(DOC_PATH),
       options: {
-        contentType: 'multipart/form-data',  // for images use: 'image/*'
+        contentType: contentType
       }
     },
   },
