@@ -10,5 +10,362 @@ npm install request --save
 
 ## Usage
 
+Code examples:
+
 - Submit invoice: `submit_invoice.js`
 - Get processed results: `get_processed_invoice.js`
+
+Fill your secret key and possibly the endpoint host in both scripts:
+
+```
+const API_KEY = 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx';
+const URL = 'https://all.rir.rossum.ai/document';
+```
+
+Fill the document path in `submit_invoice.js`:
+
+```
+const DOC_PATH = '../data/invoice.pdf';
+```
+
+Submit the invoice:
+
+```
+node submit_invoice.js
+```
+
+It gives us the document id:
+
+```
+{
+  "id": "0f98d2e177cf3c1369ef0bc4",
+  "status": "processing"
+}
+```
+
+We can then obtain the results:
+
+Fill the document id to the `get_processed_invoice.js` script:
+
+```
+// set the document id manually here
+const DOC_ID = '0f98d2e177cf3c1369ef0bc4'; // <---
+```
+
+and run it:
+
+```
+node get_processed_invoice.js
+```
+
+```
+0s: status "processing", retrying.
+5s: status "processing", retrying.
+10s: status "processing", retrying.
+15s: status "processing", retrying.
+20s: status "processing", retrying.
+25s: status "processing", retrying.
+30s: status "processing", retrying.
+35s: status "processing", retrying.
+40s: status "processing", retrying.
+45s: status "processing", retrying.
+Document is ready:
+
+{ currency: 'gbp',
+  fields:
+   [ { bbox: [Array],
+       checks: {},
+       content: '00375152',
+       name: 'account_num',
+       page: 0,
+       score: 0.957390591633303,
+       title: 'Bank Account',
+       value: '00375152',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: '40-02-02',
+       name: 'bank_num',
+       page: 0,
+       score: 0.9703049020571556,
+       title: 'Sort Code',
+       value: '40-02-02',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: '25,474.00',
+       name: 'amount_total_base',
+       page: 0,
+       score: 0.8983528999867364,
+       title: 'Tax Base Total',
+       value: '25474.00',
+       value_type: 'number' },
+     { bbox: [Array],
+       checks: [Object],
+       content: '5,094.80',
+       name: 'amount_total_tax',
+       page: 0,
+       score: 0.9294690197146265,
+       title: 'Tax Total',
+       value: '5094.80',
+       value_type: 'number' },
+     { bbox: [Array],
+       checks: [Object],
+       content: '25,474.00',
+       name: 'amount_total_tax',
+       page: 0,
+       score: 0.7885435252091348,
+       title: 'Tax Total',
+       value: '25474.00',
+       value_type: 'number' },
+     { bbox: [Array],
+       checks: [Object],
+       content: '30,568.80',
+       name: 'amount_total',
+       page: 0,
+       score: 0.9425718537569309,
+       title: 'Total Amount',
+       value: '30568.80',
+       value_type: 'number' },
+     { bbox: [Array],
+       checks: [Object],
+       content: '30,568.80',
+       name: 'amount_due',
+       page: 0,
+       score: 0.9693305559666132,
+       title: 'Amount Due',
+       value: '30568.80',
+       value_type: 'number' },
+     { bbox: [Array],
+       checks: [Object],
+       content: '5,094.80',
+       name: 'amount_due',
+       page: 0,
+       score: 0.8528612735351506,
+       title: 'Amount Due',
+       value: '5094.80',
+       value_type: 'number' },
+     { bbox: [Array],
+       checks: {},
+       content: '1st May 2014',
+       name: 'date_issue',
+       page: 0,
+       score: 0.9253548980242836,
+       title: 'Issue Date',
+       value: '2014-05-01',
+       value_type: 'date' },
+     { bbox: [Array],
+       checks: {},
+       content: '1St May 2014',
+       name: 'date_uzp',
+       page: 0,
+       score: 0.7686480680711036,
+       title: 'Tax Point Date',
+       value: '2014-05-01',
+       value_type: 'date' },
+     { bbox: [Array],
+       checks: {},
+       content: '1st May 2014',
+       name: 'date_due',
+       page: 0,
+       score: 0.8929166075893362,
+       title: 'Date Due',
+       value: '2014-05-01',
+       value_type: 'date' },
+     { bbox: [Array],
+       checks: {},
+       content: 'MSG/5946',
+       name: 'invoice_id',
+       page: 0,
+       score: 0.8109326838759122,
+       title: 'Invoice Identifier',
+       value: 'MSG/5946',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: '832 7762 12',
+       name: 'sender_dic',
+       page: 0,
+       score: 0.899231131723511,
+       title: 'Supplier VAT Number',
+       value: '832776212',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'Gardiner & Theobald LLP',
+       name: 'sender_name',
+       page: 0,
+       score: 0.8598526967119424,
+       title: 'Supplier Name',
+       value: 'Gardiner & Theobald LLP',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'Management Services',
+       name: 'sender_name',
+       page: 0,
+       score: 0.8115931665953814,
+       title: 'Supplier Name',
+       value: 'Management Services',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'Glasgow G2 1DY',
+       name: 'sender_addrline',
+       page: 0,
+       score: 0.915607217191693,
+       title: 'Supplier Address',
+       value: 'Glasgow G2 1DY',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: '5 George Square',
+       name: 'sender_addrline',
+       page: 0,
+       score: 0.9012883570935182,
+       title: 'Supplier Address',
+       value: '5 George Square',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'The G1 Building',
+       name: 'sender_addrline',
+       page: 0,
+       score: 0.9138018679051039,
+       title: 'Supplier Address',
+       value: 'The G1 Building',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'Management Services',
+       name: 'sender_addrline',
+       page: 0,
+       score: 0.7961360167425722,
+       title: 'Supplier Address',
+       value: 'Management Services',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'FIFE COLLEGE',
+       name: 'recipient_name',
+       page: 0,
+       score: 0.9300391324295865,
+       title: 'Recipient Name',
+       value: 'FIFE COLLEGE',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'Provision of Project Management Services',
+       name: 'recipient_name',
+       page: 0,
+       score: 0.7615426582066985,
+       title: 'Recipient Name',
+       value: 'Provision of Project Management Services',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'Estates Strategy Planning & Busi',
+       name: 'recipient_name',
+       page: 0,
+       score: 0.762418990561947,
+       title: 'Recipient Name',
+       value: 'Estates Strategy Planning & Busi',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'Pittsburgh Road',
+       name: 'recipient_addrline',
+       page: 0,
+       score: 0.9549529936833119,
+       title: 'Recipient Address',
+       value: 'Pittsburgh Road',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'Dunfermline',
+       name: 'recipient_addrline',
+       page: 0,
+       score: 0.8954835443058989,
+       title: 'Recipient Address',
+       value: 'Dunfermline',
+       value_type: 'text' },
+     { bbox: [Array],
+       checks: {},
+       content: 'KY11 8DY',
+       name: 'recipient_addrline',
+       page: 0,
+       score: 0.9039893288574521,
+       title: 'Recipient Address',
+       value: 'KY11 8DY',
+       value_type: 'text' },
+     { bbox: [Array],
+       content: [Array],
+       name: 'tax_details',
+       page: 0,
+       score: 0.8731676478204003,
+       title: 'Tax Details' } ],
+  full_text:
+   { content:
+      [ 'ÓQrdlner Jheobold Gardiner & Theobald LLP\n',
+        'Management Services\n',
+        'The G1 Building\n',
+        '5 George Square\n',
+        'Glasgow G2 1DY\n',
+        '. T 4440)141 568 7333\n',
+        'r 568 7345\n',
+        'e: gtmsglasgowQgardinercom\n',
+        'www.gardiner.com\n',
+        'Invoice\n',
+        'J\n',
+        'Date & Tax Point 1st May 2014                                                         ƟƟƟĚ                       |\n',
+        '3                             q                          |\n',
+        'To                    FÉFE COLLEGE                     „Fife COIEČC: : .\n',
+        '7 Pittsburgh Road                                                         ř   –Ú             ,|\n',
+        'Dunfermline 1 & May 101t          I .\n',
+        '4 KY11 8DY                                                                                                                    !\n',
+        'F.A.O. Mr Davie Neilson                                                                      |\n',
+        'RECEIVED s                          |\n',
+        '"                            |\n',
+        'Invoice No MSG/5946 !\n',
+        'Job Ref 88/31035/05                                                                                     Ě\n',
+        'VAT Reg. No. 832 7762 12                                                                                           š\n',
+        ' .\n',
+        'FIFE COLLEGE E            ;\n',
+        'To:                                                                                                                                                                              z\n',
+        'Provision of Project Management Services                                                                                       4\n',
+        'relative to Estates Strategy Planning & Business Case 25,474.00                  :\n',
+        'ž\n',
+        '. Sub Total Exclusive of VAT 25,474.00                     ==\n',
+        ']\n',
+        'Value Added Tax Q 20% 5,094.80 /\n',
+        'TOTAL AMOUNT DUE                L&M… E30,568.80            j\n',
+        '3                                                                                                              j\n',
+        'DI               |\n',
+        '.\n',
+        'j\n',
+        'D                  |\n',
+        'MXRWRŽLMƟZSG                                                                                                                                            :\n',
+        'i\n',
+        'i\n',
+        '. Cheques to be made payable to Gardiner Theobald LLP alternatively payment may be made directly to our bank account:                         :\n',
+        'HSBC Bank PLC Sort Code 40-02-02  Account No. 00375152                                                                  ]\n',
+        'Gardiner & Theobald LLP s a iniedliablity partnerahip (Regulated by RICS) which is England and Wales with regitered No. 0C307124                                   |L\n',
+        'A liet of membars\' names j avalable for inspaction at 10 South Crescenl, London WC1E 78D,the frm\'sprincipal place of business and registred office                               |\n',
+        '                                                                                              ýl\n\n' ],
+     name: 'full_text',
+     title: 'Rough Content' },
+  language: 'eng',
+  original_pages:
+   [ 'https://all.rir.rossum.ai/img/o_db0c90a43689e2ee673e42fe_0.png' ],
+  preview:
+   'https://all.rir.rossum.ai/img/db0c90a43689e2ee673e42fe_0.png',
+  previews:
+   [ 'https://all.rir.rossum.ai/img/db0c90a43689e2ee673e42fe_0.png' ],
+  status: 'ready',
+  text_lines:
+   { content: [ [Array] ],
+     name: 'text_lines',
+     title: 'Rough Content' } }
+
+https://rossum.ai/document/0f98d2e177cf3c1369ef0bc4?apikey=xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx
+```

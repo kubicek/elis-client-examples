@@ -2,7 +2,7 @@ const request = require('request');
 
 const API_KEY = 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx';
 // set the document id manually here
-const DOC_ID = '33f6ea4d95b33b0c62c9222f'; // <---
+const DOC_ID = 'db0c90a43689e2ee673e42fe'; // <---
 const BASE_URL = 'https://all.rir.rossum.ai/document/';
 const MAX_ATTS = 12;
 const WAIT = 5;  // how many seconds to wait between attempts
@@ -32,6 +32,9 @@ var refreshId = setIntervalImmediately(function(){
           data = JSON.parse(body)
           if (data.status == 'ready') {
             console.log('Document is ready:');
+            console.log();
+            console.log(data);
+            console.log();
             console.log('https://rossum.ai/document/' + DOC_ID + '?apikey=' + API_KEY);
             clearInterval(refreshId);
           } else if (data.status == 'error') {
