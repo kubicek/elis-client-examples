@@ -10,11 +10,13 @@ docker run -it --rm -p 8000:80 --name elis_client_example_php -v "$PWD":/var/www
 
 ## Usage
 
-Fill your secret key to [submit_invoice.php](submit_invoice.php) and set the invoice path:
+Fill your secret key to [submit_invoice.php](submit_invoice.php), set the invoice path and if it is an image together with the base URL:
 
 ```
 $API_KEY = 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx';
 $document_path = 'invoice.pdf';
+$document_is_image = false;
+$BASE_URL = 'https://all.rir.rossum.ai/document';
 ```
 
 Put invoice PDF/PNG files into the current directory (which is mounted to `/var/www/html` within the container):

@@ -7,8 +7,18 @@
 // private API key:
 $API_KEY = 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx';
 $document_path = 'invoice.pdf';
+$document_is_image = false;
+$BASE_URL = 'https://all.rir.rossum.ai/document';
 
-// first we upload the document
+// polling settings for the info download:
+$max_attempts = 12;
+$secs_per_attempt = 5;  // in seconds
+
+
+// in case the URL has a trailing slash at the end
+$BASE_URL = rtrim($BASE_URL, '/');
+
+// first we upload the document:
 
 // initialise the cURL var
 $ch = curl_init();
@@ -18,7 +28,7 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 // make a POST request
 curl_setopt($ch, CURLOPT_POST, true);
 // set the URL
-curl_setopt($ch, CURLOPT_URL, 'https://all.rir.rossum.ai/document');
+curl_setopt($ch, CURLOPT_URL, $BASE_URL);
 
 // set the header
 $header = array(
@@ -28,10 +38,8 @@ $header = array(
 );
 curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 
-// attach the invoice file
-$cfile = curl_file_create($document_path);
-// for images use:
-// $cfile = curl_file_create($document_path, 'image/*');
+// attach the invoice file to our request, select the appropriate MIME type
+$cfile = ($document_is_image) ? curl_file_create($document_path, 'image/*') : curl_file_create($document_path);
 $data = array('file' => $cfile);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
@@ -58,8 +66,6 @@ if (curl_errno($ch)) {
 
 
 // wait until the file has been processed
-$max_attempts = 12;
-$secs_per_attempt = 5;
 $success = false;
 for ($i = 0; $i < $max_attempts; $i++){
     sleep($secs_per_attempt);  // wait some time (at least 1 sec) before each request
@@ -70,7 +76,7 @@ for ($i = 0; $i < $max_attempts; $i++){
     // get the response from cURL in future
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     // set the URL
-    curl_setopt($ch, CURLOPT_URL, 'https://all.rir.rossum.ai/document/'.$doc_id);
+    curl_setopt($ch, CURLOPT_URL, $BASE_URL.'/'.$doc_id);
     // set the header
     $header = array(
         'Accept: application/json',
