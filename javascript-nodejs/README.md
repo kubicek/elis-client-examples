@@ -1,5 +1,9 @@
 # Elis API client examples in Javascript & node.js
 
+In this example we send an invoice as a PDF or PNG document to Elis API,
+obtain the document id, then wait for the result by polling and get the
+extracted data in JSON format.
+
 ## Installation
 
 In your project directory run:
@@ -9,59 +13,26 @@ npm init --yes
 npm install request --save
 ```
 
-## Check the code
-
-- Submit invoice: `submit_invoice.js`
-- Get processed results: `get_processed_invoice.js`
-
 ## Usage
 
-Fill your secret key and possibly the endpoint host in both scripts:
+Fill your secret key, document path and possibly the endpoint host in `elis_client_example.js`:
 
 ```
 const API_KEY = 'xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx';
-const URL = 'https://all.rir.rossum.ai/document';
-```
-
-Fill the document path in `submit_invoice.js`:
-
-```
 const DOC_PATH = '../data/invoice.pdf';
+const URL = 'https://all.rir.rossum.ai/document'; // no trailing slash at the end
 ```
 
-Submit the invoice:
+Run the example:
 
 ```
-node submit_invoice.js
-```
-
-It gives us the document id:
-
-```
-{
-  "id": "0f98d2e177cf3c1369ef0bc4",
-  "status": "processing"
-}
-```
-
-We can then obtain the results:
-
-Fill the document id to the `get_processed_invoice.js` script:
-
-```
-// set the document id manually here
-const DOC_ID = '0f98d2e177cf3c1369ef0bc4'; // <---
-```
-
-and run it:
-
-```
-node get_processed_invoice.js
+node elis_client_example.js
 ```
 
 ### Example output
 
 ```
+File uploaded successfully (66eed44cfa96a8d1a91a5048).
 0s: status "processing", retrying.
 5s: status "processing", retrying.
 10s: status "processing", retrying.
