@@ -1,6 +1,6 @@
-# Elis API client examples
+# Invoice extraction with Rossum Elis API, client examples
 
-These are examples on how to use the Elis Data Extraction API.
+These are examples on how to use the Elis Data Extraction API to automatically process your invoices with AI.
 
 ## Docs
 
