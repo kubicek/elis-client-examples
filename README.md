@@ -4,14 +4,13 @@ These are examples on how to use the Elis Data Extraction API to automatically p
 
 ## Docs
 
-https://rossumrir.docs.apiary.io/
+https://rossum.ai/developers/api/
 
 ## Get API key
 
-Sign up:
+Sign up for free (via your Google or GitHub account):
 
-- https://rossum.ai/data-capture
-- fill: name, email, expected monthly volume of invoices
+- https://rossum.ai/developers
 - "Signup successful! Thank you for signing up. You will receive an email with API access details in no later than a few hours."
 
 ```
@@ -25,7 +24,7 @@ Enjoy your new account in Rossum's Invoice Extraction API!
 
         https://all.rir.rossum.ai/
 
-  Please refer to http://docs.rossumrir.apiary.io/ for detailed
+  Please refer to https://rossum.ai/developers/api/ for detailed
 documentation of our REST API, and don't hesitate to ask for help
 at support@rossum.ai - just reply to this email.
 
@@ -36,6 +35,8 @@ example.
   Kind regards,
                                         Rossum Invoice Robot
 ```
+
+You can check this information and your API usage in the dashboard: https://api.rossum.ai/
 
 ## Examples in various languages
 
