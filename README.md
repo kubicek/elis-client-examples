@@ -47,7 +47,7 @@ Python package that provides a CLI and Python API.
 ```bash
 pip install rossum
 export ROSSUM_API_KEY="xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx"
-rossum extract invoice.pdf invoice.json
+rossum extract invoice.pdf -o invoice.json
 ```
 
 ```python
