@@ -1,6 +1,6 @@
-# Invoice extraction with Rossum Elis API, client examples
+# Extracting invoices with Rossum Elis Extraction API - client examples
 
-These are examples on how to use the Elis Data Extraction API to automatically process your invoices with AI.
+These are examples on how to use the Elis Extraction API to automatically process your invoices with AI.
 
 ## Docs
 
@@ -37,6 +37,23 @@ example.
 ```
 
 You can check this information and your API usage in the dashboard: https://api.rossum.ai/
+
+## Python API client & CLI
+
+The easiest way to try out the Elis Extraction API
+is the [`rossum`](https://github.com/rossumai/rossum-api-python-client)
+Python package that provides a CLI and Python API.
+
+```bash
+pip install rossum
+export ROSSUM_API_KEY="xxxxxxxxxxxxxxxxxxxxxx_YOUR_ELIS_API_KEY_xxxxxxxxxxxxxxxxxxxxxxx"
+rossum extract invoice.pdf invoice.json
+```
+
+```python
+import rossum
+extracted_json = rossum.extract('invoice.pdf')
+```
 
 ## Examples in various languages
 
