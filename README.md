@@ -59,12 +59,12 @@ extracted_json = rossum.extract('invoice.pdf')
 
 In general we send a document file (with security key) to the Elis API, obtain a document id, wait for it being completed (via polling) and get the extracted data in JSON format.
 
-- [Bash & curl](bash-curl/)
-- [Python & requests/polling](python-requests/)
-- [Java & unirest & gradle](java-unirest/)
-- [Scala & sttp/json4s & sbt](scala-sttp/)
-- [Javascript & node.js](javascript-nodejs/)
-- [PHP & curl](php-curl/)
+- [Bash](bash-curl/) (curl)
+- [Python](python-requests/) (requests, polling)
+- [Java](java-unirest/) (unirest, gradle)
+- [Scala](scala-sttp/) (sttp, json4s, sbt)
+- [Javascript](javascript-nodejs/) (node.js)
+- [PHP](php-curl/) (curl)
 - [C#](c-sharp/)
 
 ## Example data
