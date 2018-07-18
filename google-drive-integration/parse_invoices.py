@@ -8,6 +8,7 @@ import io
 import os
 import requests
 import csv
+import concurrent.futures
 
 from apiclient.discovery import build, MediaFileUpload
 from apiclient.http import MediaIoBaseDownload
@@ -15,8 +16,7 @@ from httplib2 import Http
 from oauth2client import file, client, tools
 import json
 
-from elis import ElisClient, DEFAULT_API_URL
-
+from rossum.extraction import ElisExtractionApi, DEFAULT_API_URL
 
 
 # Setup the Drive v3 API
@@ -39,6 +39,7 @@ def find_rossum_folder():
     files = response.get('files', [])
     return files[0]
 
+
 def find_files_in_folder(folder):
     folder_id = folder.get('id')
     q = "'{}' in parents and trashed = false".format(folder_id)
@@ -50,11 +51,13 @@ def find_files_in_folder(folder):
     files = response.get('files', [])
     return files
 
+
 def find_io_folders(parent_folder):
     files = find_files_in_folder(parent_folder)
     input_folder = [f for f in files if f.get('name') == 'Input'][0]
     output_folder = [f for f in files if f.get('name') == 'Output'][0]
     return input_folder, output_folder
+
 
 def create_folder(directory):
     try:
@@ -62,6 +65,7 @@ def create_folder(directory):
             os.makedirs(directory)
     except OSError:
         print ('Error: Creating directory. ' + directory)
+
 
 def download_file(f):
     fid = f.get('id')
@@ -74,9 +78,11 @@ def download_file(f):
         while done is False:
             status, done = downloader.next_chunk()
 
+
 def download_files(files):
     for f in files:
         download_file(f)
+
 
 def upload_csv(folder, path):
     fname = os.path.basename(path)
@@ -92,6 +98,7 @@ def upload_csv(folder, path):
                                   media_body=media,
                                   fields='id').execute()
 
+
 def process_elis(client, dirname, invoice_files):
     files = [join(dirname, f['name']) for f in invoice_files]
     def parse_document(fname):
@@ -100,14 +107,17 @@ def process_elis(client, dirname, invoice_files):
         document_id = send_result['id']
         print('[Elis] Document id:', document_id)
         return client.get_document(document_id)
-    dicts = [parse_document(f) for f in files]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        dicts = executor.map(parse_document, files)
     return dicts
+
 
 def write_csv(ofname, fieldnames, row):
     with open(ofname, 'w') as csv_fp:
         writer = csv.DictWriter(csv_fp, fieldnames)
         writer.writeheader()
         writer.writerow(row)
+
 
 def to_csv(invoice_dict):
     fstr = defaultdict(list)
@@ -122,6 +132,7 @@ def to_csv(invoice_dict):
         row[k] = '\n'.join(vl)
     return row
 
+
 def get_rir_fieldnames(url):
     r = requests.get(url + '/fields')
     fields = json.loads(r.text)['names']
@@ -129,9 +140,11 @@ def get_rir_fieldnames(url):
     fieldnames = ['filename', 'status', 'preview'] + [titles[f] for f in fields]
     return fieldnames
 
+
 def dict_to_csv(fieldnames, invoice_dict, ofname):
     row = to_csv(invoice_dict)
     write_csv(ofname, fieldnames, row)
+
 
 def upload_csvs(parent_folder, dicts, files, fieldnames):
     create_folder('csv')
@@ -141,12 +154,13 @@ def upload_csvs(parent_folder, dicts, files, fieldnames):
         dict_to_csv(fieldnames, invoice_dict, ofname)
         upload_csv(parent_folder, ofname)
 
+
 def parse_args():
-    from oauth2client.tools import argparser
-    parser = argparse.ArgumentParser(description='Rossum API Google Drive integration.', parents=[argparser])
+    parser = argparse.ArgumentParser(description='Rossum API Google Drive integration.')
     parser.add_argument('-s', '--secret-key', help='Secret API key')
     parser.add_argument('-u', '--base-url', default=DEFAULT_API_URL, help='Base API URL')
     return parser.parse_args()
+
 
 def main():
     args = parse_args()
@@ -158,12 +172,13 @@ def main():
     download_files(invoice_files)
 
     ## Process in RIR
-    client = ElisClient(args.secret_key, args.base_url)
+    client = ElisExtractionApi(args.secret_key, args.base_url)
     invoice_dicts = process_elis(client, 'invoices/', invoice_files)
 
     ## Upload the results
     fieldnames = get_rir_fieldnames(args.base_url)
     upload_csvs(output_folder, invoice_dicts, invoice_files, fieldnames)
+
 
 if __name__ == '__main__':
     main()
