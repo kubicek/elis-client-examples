@@ -66,6 +66,7 @@ In general we send a document file (with security key) to the Elis API, obtain a
 - [Javascript](javascript-nodejs/) (node.js)
 - [PHP](php-curl/) (curl)
 - [C#](c-sharp/)
+- [Ruby](ruby-restclient/) (restclient)
 
 ## Example data
 
